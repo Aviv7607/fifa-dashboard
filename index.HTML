@@ -73,7 +73,7 @@
 </div>
 
 <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbzyJu3GefBeqwG_A5tQZ2E3BoEkTNP3ot-CbTVftyN6Q_AqASaoUJTJUNwix1VamxTG/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwQqCVLwAEatxQpzmBA2rzhGfi7r7Pjf7-hyAn3SEd_D_CSqnLBXzNMJt81be2AZPTQ/exec';
     let rawData = null;
 
     async function loadData() {
@@ -86,30 +86,30 @@
     }
 
     function render(mode) {
-        const suffix = mode === '60' ? '60' : '';
-        let players = [...rawData.players].sort((a, b) => b['winRate' + suffix] - a['winRate' + suffix]);
+        const s = mode === '60' ? '60' : '';
+        let players = [...rawData.players].sort((a, b) => b['winRate' + s] - a['winRate' + s]);
         
         const top3 = players.slice(0, 3);
         document.getElementById('podium-area').innerHTML = `
-            <div class="podium-item p2"><div class="podium-name">${top3[1]?.name || ''}</div><div>${top3[1]?.['winRate'+suffix] || 0}%</div></div>
-            <div class="podium-item p1"><div class="podium-name">${top3[0]?.name || ''}</div><div>${top3[0]?.['winRate'+suffix] || 0}%</div></div>
-            <div class="podium-item p3"><div class="podium-name">${top3[2]?.name || ''}</div><div>${top3[2]?.['winRate'+suffix] || 0}%</div></div>
+            <div class="podium-item p2"><div class="podium-name">${top3[1]?.name || ''}</div><div>${top3[1]?.['winRate'+s] || 0}%</div></div>
+            <div class="podium-item p1"><div class="podium-name">${top3[0]?.name || ''}</div><div>${top3[0]?.['winRate'+s] || 0}%</div></div>
+            <div class="podium-item p3"><div class="podium-name">${top3[2]?.name || ''}</div><div>${top3[2]?.['winRate'+s] || 0}%</div></div>
         `;
 
         document.querySelector('#main-table tbody').innerHTML = players.map(p => `
             <tr>
                 <td style="font-weight:bold;">${p.name}</td>
-                <td>${p['wins'+suffix]}</td>
-                <td>${p['losses'+suffix]}</td>
-                <td style="color:var(--accent)">${p['techLosses'+suffix]}</td>
-                <td>${p['attendance'+suffix]}%</td>
-                <td class="win-rate-cell">${p['winRate'+suffix]}%</td>
+                <td>${p['wins'+s]}</td>
+                <td>${p['losses'+s]}</td>
+                <td style="color:var(--accent)">${p['techLosses'+s]}</td>
+                <td>${p['attendance'+s]}%</td>
+                <td class="win-rate-cell">${p['winRate'+s]}%</td>
             </tr>
         `).join('');
 
-        const shamed = [...players].sort((a, b) => b['techLosses' + suffix] - a['techLosses' + suffix])[0];
+        const shamed = [...players].sort((a, b) => b['techLosses' + s] - a['techLosses' + s])[0];
         document.getElementById('shame-name').innerText = shamed ? shamed.name : '-';
-        document.getElementById('shame-count').innerText = shamed ? shamed['techLosses' + suffix] + " הפסדים טכניים" : '';
+        document.getElementById('shame-count').innerText = shamed ? shamed['techLosses' + s] + " הפסדים טכניים" : '';
 
         document.querySelector('#pairs-table tbody').innerHTML = rawData.pairs.map(p => `
             <tr><td>${p.name}</td><td style="font-weight:bold; color:var(--primary)">${p.wins}</td></tr>
@@ -118,10 +118,10 @@
         document.getElementById('attendance-area').innerHTML = players.slice(0, 5).map(p => `
             <div style="margin-bottom:12px;">
                 <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:3px;">
-                    <span>${p.name}</span><span>${p['attendance'+suffix]}%</span>
+                    <span>${p.name}</span><span>${p['attendance'+s]}%</span>
                 </div>
                 <div style="height:8px; background:#334155; border-radius:4px; overflow:hidden;">
-                    <div style="width:${p['attendance'+suffix]}%; background:var(--primary); height:100%;"></div>
+                    <div style="width:${p['attendance'+s]}%; background:var(--primary); height:100%;"></div>
                 </div>
             </div>
         `).join('');
